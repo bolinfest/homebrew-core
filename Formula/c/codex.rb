@@ -11,8 +11,12 @@ class Codex < Formula
   head     "https://github.com/openai/codex.git", branch: "main"
 
   depends_on "rust" => :build
+  depends_on "openssl@3"
 
   def install
+    ENV["OPENSSL_DIR"] = Formula["openssl@3"].opt_prefix
+    ENV["OPENSSL_NO_VENDOR"] = "1"
+
     system "cargo", "install", "--bin", "codex", *std_cargo_args(path: "codex-rs/cli")
   end
 
